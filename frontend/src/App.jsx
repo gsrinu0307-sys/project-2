@@ -1,23 +1,23 @@
 import { Routes, Route } from "react-router-dom";
-import Home from "./components/Home";
-import Login from "./components/Login";
-import ForgotPassword from "./components/ForgotPassword";
-import ResetPassword from "./components/ResetPassword";
-import ChangePassword from "./components/ChangePassword";
-import Register from "./components/Eregister";
-import Employees from "./components/Employee";
-import EmployeeDashboard from "./components/EmployeeDashboard";
-import LeaveApplication from "./components/LeaveApplication";
-import ApplyLeave from "./components/AnnualLeave";
-import NotFound from "./components/NotFound";
-import Sick from "./components/Sickleave";
-import Maternity from "./components/Maternityleave";
-import Casual from "./components/Casualleave";
-import UpdateProfile from "./components/UpdateProfile";
-import AdminLogin from "./components/AdminLogin";
-import AdminDashboard from "./components/AdminDashboard";
-import AdminReset from "./components/AdminReset";
-import Adminchange from "./components/AdminChange";
+import Home from "./Components/Home";
+import Login from "./Components/Login";
+import ForgotPassword from "./Components/ForgotPassword";
+import ResetPassword from "./Components/ResetPassword";
+import ChangePassword from "./Components/ChangePassword";
+import Register from "./Components/Eregister";
+import Employees from "./Components/Employee";
+import EmployeeDashboard from "./Components/EmployeeDashboard";
+import LeaveApplication from "./Components/LeaveApplication";
+import ApplyLeave from "./Components/AnnualLeave";
+import NotFound from "./Components/NotFound";
+import Sick from "./Components/Sickleave";
+import Maternity from "./Components/Maternityleave";
+import Casual from "./Components/Casualleave";
+import UpdateProfile from "./Components/UpdateProfile";
+import AdminLogin from "./Components/AdminLogin";
+import AdminDashboard from "./Components/AdminDashboard";
+import AdminReset from "./Components/AdminReset";
+import Adminchange from "./Components/AdminChange";
 function App() {
   return (
     <>
