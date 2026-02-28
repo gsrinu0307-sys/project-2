@@ -16,15 +16,15 @@ function AdminLogin() {
 
     try {
       const response = await fetch(
-        "http://localhost:10000/api/admin/login",
-        {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify({ email, password }),
-        }
-      );
+      `${process.env.REACT_APP_API_URL}/api/admin/login`,
+      {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ email, password }),
+      }
+    );
 
       // Read response safely
       const text = await response.text();

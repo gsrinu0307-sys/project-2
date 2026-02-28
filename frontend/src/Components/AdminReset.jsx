@@ -16,16 +16,16 @@ function AdminReset() {
     setMessage("");
 
     try {
-      const response = await fetch(
-        "http://localhost:10000/api/admin/forgotpassword",
-        {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify({ email }),
-        }
-      );
+     const response = await fetch(
+      `${process.env.REACT_APP_API_URL}/api/admin/forgotpassword`,
+      {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ email }),
+      }
+    );
 
       const data = await response.json();
 

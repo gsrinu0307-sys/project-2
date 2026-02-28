@@ -59,38 +59,33 @@ export default function PersonalDetails() {
 
   // ✅ Correct GET
   useEffect(() => {
-    axios
-      .get(`http://localhost:10000/api/employees/${employeeId}`)
-      .then((res) => {
-        setFormData({
-          name: res.data.data.name,
-          department: res.data.data.department,
-          jobTitle: res.data.data.job_title,
-          jobCategory: res.data.data.job_category
-        });
-      })
-      .catch((err) => console.error("GET ERROR:", err));
-  }, []);
+  axios
+    .get(`${process.env.REACT_APP_API_URL}/api/employees/${employeeId}`)
+    .then((res) => {
+      setFormData({
+        name: res.data.data.name,
+        department: res.data.data.department,
+        jobTitle: res.data.data.job_title,
+        jobCategory: res.data.data.job_category
+      });
+    })
+    .catch((err) => console.error("GET ERROR:", err));
+}, []);
 
-  const handleChange = (e) => {
-    setFormData({ ...formData, [e.target.name]: e.target.value });
-  };
+const handleSave = async () => {
+  try {
+    await axios.put(
+      `${process.env.REACT_APP_API_URL}/api/employees/${employeeId}`,
+      formData
+    );
 
-  // ✅ Correct PUT
-  const handleSave = async () => {
-    try {
-      await axios.put(
-        `http://localhost:10000/api/employees/${employeeId}`,
-        formData
-      );
-
-      alert("Updated Successfully!");
-      setEditMode(false);
-    } catch (error) {
-      console.error("UPDATE ERROR:", error);
-      alert("Update failed!");
-    }
-  };
+    alert("Updated Successfully!");
+    setEditMode(false);
+  } catch (error) {
+    console.error("UPDATE ERROR:", error);
+    alert("Update failed!");
+  }
+};  
 
   return (
     <div style={styles.card}>

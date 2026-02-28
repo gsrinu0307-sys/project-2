@@ -25,23 +25,37 @@ const sendResponse = (res, status, message, data = null) => {
 /* ================= REGISTER ================= */
 exports.register = async (req, res) => {
   try {
-    const { firstName, lastName, email, phone, password, confirmPassword } = req.body;
+    const {
+      firstName,
+      lastName,
+      email,
+      phone,
+      password,
+      confirmPassword,
+    } = req.body;
 
-    // BASIC VALIDATION
-    if (!firstName || !lastName)
-      return sendResponse(res, 400, "First and last name required");
+    // VALIDATION
+    if (!firstName || !lastName) {
+      return res.status(400).json({ message: "First and last name required" });
+    }
 
-    if (!email || !/^\S+@\S+\.\S+$/.test(email))
-      return sendResponse(res, 400, "Valid email required");
+    if (!email || !/^\S+@\S+\.\S+$/.test(email)) {
+      return res.status(400).json({ message: "Valid email required" });
+    }
 
-    if (!phone || !/^[0-9]{10}$/.test(phone))
-      return sendResponse(res, 400, "Valid 10-digit phone required");
+    if (!phone || !/^[0-9]{10}$/.test(phone)) {
+      return res.status(400).json({ message: "Valid 10-digit phone required" });
+    }
 
-    if (!password || password.length < 6)
-      return sendResponse(res, 400, "Password must be at least 6 characters");
+    if (!password || password.length < 6) {
+      return res
+        .status(400)
+        .json({ message: "Password must be at least 6 characters" });
+    }
 
-    if (password !== confirmPassword)
-      return sendResponse(res, 400, "Passwords do not match");
+    if (password !== confirmPassword) {
+      return res.status(400).json({ message: "Passwords do not match" });
+    }
 
     // CHECK EXISTING USER
     const existingUser = await pool.query(
@@ -49,8 +63,9 @@ exports.register = async (req, res) => {
       [email]
     );
 
-    if (existingUser.rows.length > 0)
-      return sendResponse(res, 409, "Email already exists");
+    if (existingUser.rows.length > 0) {
+      return res.status(409).json({ message: "Email already exists" });
+    }
 
     // HASH PASSWORD
     const hashedPassword = await bcrypt.hash(password, 12);
@@ -63,11 +78,15 @@ exports.register = async (req, res) => {
       [firstName, lastName, email, phone, hashedPassword]
     );
 
-    return sendResponse(res, 201, "Account created successfully");
+    return res.status(201).json({
+      message: "Account created successfully",
+    });
 
   } catch (err) {
     console.error("❌ REGISTER ERROR:", err);
-    return sendResponse(res, 500, "Server error");
+    return res.status(500).json({
+      message: "Server error",
+    });
   }
 };
 

@@ -8,37 +8,38 @@ export default function Login() {
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
 
-  const handleLogin = async (e) => {
-    e.preventDefault();
-    setError("");
+ const handleLogin = async (e) => {
+  e.preventDefault();
+  setError("");
 
-    try {
-      const res = await fetch("http://localhost:10000/api/auth/login", {
+  try {
+    const res = await fetch(
+      `${process.env.REACT_APP_API_URL}/api/auth/login`,
+      {
         method: "POST",
         headers: {
           "Content-Type": "application/json"
         },
         body: JSON.stringify({ email, password })
-      });
-
-      const data = await res.json();
-
-      if (!res.ok) {
-        setError(data.message || "Login failed");
-        return;
       }
+    );
 
-      // ✅ login success
-      alert("✅ Login Successful");
+    const data = await res.json();
 
-      // (optional) store user info
-      localStorage.setItem("user", JSON.stringify(data.user));
-
-      navigate("/employeedashboard"); // redirect to dashboard/home
-    } catch (err) {
-      setError("Server not reachable");
+    if (!res.ok) {
+      setError(data.message || "Login failed");
+      return;
     }
-  };
+
+    alert("✅ Login Successful");
+
+    localStorage.setItem("user", JSON.stringify(data.user));
+
+    navigate("/employeedashboard");
+  } catch (err) {
+    setError("Server not reachable");
+  }
+};
 
   return (
     <div className="container-fluid vh-100 d-flex justify-content-center align-items-center bg-light">

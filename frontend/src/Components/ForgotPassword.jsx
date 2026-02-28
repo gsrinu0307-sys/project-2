@@ -13,8 +13,8 @@ export default function ForgotPassword() {
     setLoading(true);
 
     try {
-      const res = await fetch(
-        "http://localhost:10000/api/auth/forget",
+     const res = await fetch(
+      `${process.env.REACT_APP_API_URL}/api/auth/forget`,
         {
           method: "POST",
           headers: { "Content-Type": "application/json" },

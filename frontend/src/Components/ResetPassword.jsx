@@ -10,36 +10,36 @@ export default function ResetPassword() {
   const [error, setError] = useState("");
 
   const handleSubmit = async () => {
-    if (!password || !confirm) {
-      return setError("All fields required");
-    }
+  if (!password || !confirm) {
+    return setError("All fields required");
+  }
 
-    if (password !== confirm) {
-      return setError("Passwords do not match");
-    }
+  if (password !== confirm) {
+    return setError("Passwords do not match");
+  }
 
-    try {
-      const res = await fetch(
-        `http://localhost:10000/api/auth/reset/${token}`,
-        {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ password }),
-        }
-      );
-
-      const data = await res.json();
-
-      if (res.ok) {
-        alert("Password updated successfully");
-        navigate("/login");
-      } else {
-        setError(data.message || "Reset failed");
+  try {
+    const res = await fetch(
+      `${process.env.REACT_APP_API_URL}/api/auth/reset/${token}`,
+      {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ password }),
       }
-    } catch (err) {
-      setError("Server error");
+    );
+
+    const data = await res.json();
+
+    if (res.ok) {
+      alert("Password updated successfully");
+      navigate("/login");
+    } else {
+      setError(data.message || "Reset failed");
     }
-  };
+  } catch (err) {
+    setError("Server error");
+  }
+};
 
   return (
     <div className="container vh-100 d-flex justify-content-center align-items-center">

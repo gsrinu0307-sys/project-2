@@ -1,8 +1,9 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 
-
 const Register = () => {
+  const navigate = useNavigate();
+
   const [form, setForm] = useState({
     firstName: "",
     lastName: "",
@@ -12,10 +13,9 @@ const Register = () => {
     confirmPassword: "",
     agree: false,
   });
-  
-  const navigate = useNavigate();
 
   const [errors, setErrors] = useState({});
+  const [loading, setLoading] = useState(false);
 
   const handleChange = (e) => {
     const { name, value, type, checked } = e.target;
@@ -48,22 +48,34 @@ const Register = () => {
   };
 
   const handleSubmit = async (e) => {
-  e.preventDefault();
-  if (!validate()) return;
+    e.preventDefault();
+    if (!validate()) return;
 
-  const res = await fetch("http://localhost:10000/api/auth/register", {
-    method: "POST",
-    headers: { "Content-Type": "application/json" },
-    body: JSON.stringify(form),
-  });
+    setLoading(true);
 
-  const data = await res.json();
+    try {
+      const res = await fetch(
+        `${process.env.REACT_APP_API_URL}/api/auth/register`,
+        {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(form),
+        }
+      );
 
-  if (res.ok) {
-    alert("✅ Account created successfully");
-  } else {
-    alert(data.message);
-  }
+      const data = await res.json();
+
+      if (res.ok) {
+        alert("✅ Account created successfully");
+        navigate("/login");
+      } else {
+        alert(data.message || "Registration failed");
+      }
+    } catch (err) {
+      alert("Server error. Please try again.");
+    } finally {
+      setLoading(false);
+    }
   };
 
   return (
@@ -116,11 +128,6 @@ const Register = () => {
           font-weight: 500;
           cursor: pointer;
         }
-        @media (max-width: 768px) {
-          h3 {
-            text-align: center;
-          }
-        }
       `}</style>
 
       <div className="register-card">
@@ -130,21 +137,13 @@ const Register = () => {
           <div className="row">
             <div className="col-md-6 mb-3">
               <label>First Name</label>
-              <input
-                name="firstName"
-                className="form-control"
-                onChange={handleChange}
-              />
+              <input name="firstName" className="form-control" onChange={handleChange} />
               <div className="error">{errors.firstName}</div>
             </div>
 
             <div className="col-md-6 mb-3">
               <label>Last Name</label>
-              <input
-                name="lastName"
-                className="form-control"
-                onChange={handleChange}
-              />
+              <input name="lastName" className="form-control" onChange={handleChange} />
               <div className="error">{errors.lastName}</div>
             </div>
           </div>
@@ -152,21 +151,13 @@ const Register = () => {
           <div className="row">
             <div className="col-md-6 mb-3">
               <label>Email Address</label>
-              <input
-                name="email"
-                className="form-control"
-                onChange={handleChange}
-              />
+              <input name="email" className="form-control" onChange={handleChange} />
               <div className="error">{errors.email}</div>
             </div>
 
             <div className="col-md-6 mb-3">
               <label>Phone Number</label>
-              <input
-                name="phone"
-                className="form-control"
-                onChange={handleChange}
-              />
+              <input name="phone" className="form-control" onChange={handleChange} />
               <div className="error">{errors.phone}</div>
             </div>
           </div>
@@ -174,34 +165,19 @@ const Register = () => {
           <div className="row">
             <div className="col-md-6 mb-3">
               <label>Password</label>
-              <input
-                type="password"
-                name="password"
-                className="form-control"
-                onChange={handleChange}
-              />
+              <input type="password" name="password" className="form-control" onChange={handleChange} />
               <div className="error">{errors.password}</div>
             </div>
 
             <div className="col-md-6 mb-3">
               <label>Confirm Password</label>
-              <input
-                type="password"
-                name="confirmPassword"
-                className="form-control"
-                onChange={handleChange}
-              />
+              <input type="password" name="confirmPassword" className="form-control" onChange={handleChange} />
               <div className="error">{errors.confirmPassword}</div>
             </div>
           </div>
 
           <div className="form-check mb-2">
-            <input
-              type="checkbox"
-              name="agree"
-              className="form-check-input"
-              onChange={handleChange}
-            />
+            <input type="checkbox" name="agree" className="form-check-input" onChange={handleChange} />
             <label className="form-check-label">
               I agree to the <span className="link">Terms</span> &{" "}
               <span className="link">Privacy Policy</span>
@@ -209,18 +185,15 @@ const Register = () => {
             <div className="error">{errors.agree}</div>
           </div>
 
-          <button className="btn btn-primary w-100 mt-3">
-            Create Account
+          <button className="btn btn-primary w-100 mt-3" disabled={loading}>
+            {loading ? "Creating..." : "Create Account"}
           </button>
 
           <p className="text-center mt-3 text-muted">
-            Already have an account? <span
-            className="link"
-            onClick={() => navigate("/login")}
-          >
-            Log In
-          </span>
-
+            Already have an account?{" "}
+            <span className="link" onClick={() => navigate("/login")}>
+              Log In
+            </span>
           </p>
         </form>
       </div>
