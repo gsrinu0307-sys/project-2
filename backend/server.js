@@ -11,22 +11,23 @@ const app = express();
 
 /* ================= CORS CONFIG ================= */
 
-const allowedOrigins = [
-  "http://localhost:5173", // local frontend (Vite)
-  "http://localhost:3000", // if using CRA
-  process.env.FRONTEND_URL // Vercel frontend
-].filter(Boolean); // removes undefined
-
 app.use(
   cors({
-    origin: (origin, callback) => {
-      // allow Postman or server-to-server calls
+    origin: function (origin, callback) {
+      // allow Postman or server calls
       if (!origin) return callback(null, true);
 
-      if (allowedOrigins.includes(origin)) {
+      // allow localhost (development)
+      if (origin.includes("localhost")) {
         return callback(null, true);
       }
 
+      // allow production frontend
+      if (origin === process.env.FRONTEND_URL) {
+        return callback(null, true);
+      }
+
+      console.log("Blocked by CORS:", origin);
       return callback(new Error("Not allowed by CORS"));
     },
     credentials: true,
@@ -39,7 +40,6 @@ app.use(express.json());
 
 /* ================= ROUTES ================= */
 
-// Health check
 app.get("/", (req, res) => {
   res.status(200).json({
     message: "Backend is running 🚀",
