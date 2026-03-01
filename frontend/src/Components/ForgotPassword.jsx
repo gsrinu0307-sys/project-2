@@ -14,7 +14,7 @@ export default function ForgotPassword() {
 
     try {
      const res = await fetch(
-      `${process.env.REACT_APP_API_URL}/api/auth/forget`,
+      `${process.env.VITE_API_URL}/api/auth/forget`,
         {
           method: "POST",
           headers: { "Content-Type": "application/json" },

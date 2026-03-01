@@ -60,7 +60,7 @@ export default function PersonalDetails() {
   // ✅ Correct GET
   useEffect(() => {
   axios
-    .get(`${process.env.REACT_APP_API_URL}/api/employees/${employeeId}`)
+    .get(`${process.env.VITE_API_URL}/api/employees/${employeeId}`)
     .then((res) => {
       setFormData({
         name: res.data.data.name,
