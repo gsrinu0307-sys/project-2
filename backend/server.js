@@ -11,19 +11,23 @@ const app = express();
 
 /* ================= CORS CONFIG ================= */
 
+const allowedOrigins = [
+  "http://localhost:5173",
+];
+
 app.use(
   cors({
     origin: function (origin, callback) {
-      // allow Postman or server calls
+      // Allow server-to-server or Postman requests
       if (!origin) return callback(null, true);
 
-      // allow localhost (development)
+      // Allow localhost (development)
       if (origin.includes("localhost")) {
         return callback(null, true);
       }
 
-      // allow production frontend
-      if (origin === process.env.FRONTEND_URL) {
+      // Allow ALL Vercel deployments (preview + production)
+      if (origin.includes("vercel.app")) {
         return callback(null, true);
       }
 
@@ -42,6 +46,7 @@ app.use(express.json());
 
 app.get("/", (req, res) => {
   res.status(200).json({
+    success: true,
     message: "Backend is running 🚀",
   });
 });
