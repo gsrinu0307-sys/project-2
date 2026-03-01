@@ -15,8 +15,8 @@ function AdminLogin() {
     setError("");
 
     try {
-      const response = await fetch(
-      `${process.env.VITE_API_URL}/api/admin/login`,
+      const respon${se = await fetch(
+      `process.env.VITE_API_URL}/api/admin/login`,
       {
         method: "POST",
         headers: {

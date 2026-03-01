@@ -6,7 +6,7 @@ export default function AdminEmployeeList() {
 
   // Fetch employees from backend
   useEffect(() => {
-    fetch("http://localhost:10000/api/employees") // change if needed
+    fetch(`${process.env.VITE_API_URL}/api/employees`) // change if needed
       .then((res) => res.json())
       .then((data) => setEmployees(data))
       .catch((err) => console.error("Error fetching employees:", err));
